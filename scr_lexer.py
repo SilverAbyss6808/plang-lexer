@@ -24,9 +24,3 @@ def get_tokens(code):
 
     return sorted_matches
 
-f = open('bco_examples/TryEverything.bco')
-code = f.read()
-tokens = get_tokens(code)
-
-for token in tokens: print(token)
-

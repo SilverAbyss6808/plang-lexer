@@ -1,0 +1,67 @@
+program TryEverything() returns NONE {
+
+    int Num_1 = 58907;                                                              // integer definition
+    float Num_2 = 6.9389264;                                                        // floating-point definition
+    char Letter = 'a';                                                              // character definition
+    bool Boolean = FALSE;                                                           // boolean definition
+    arrayof int[5] Array = [1, 2, 3, 4, 5];                                         // array definition
+    string Str = "This is a string. !@#$%^&*()_ <-- this is to test the strings";   // string definition
+
+    // testing single arithmetic operators
+    5 + 5;
+    Num_1 = Num_2 - 7;
+    int Num3 = (7 * (8 / 4));
+    float Float2 = 0;
+    Num_1 = Num_1 % 2;
+
+    // testing double arithmetic operators
+    Float2 += 1.5;
+    Float2 -= 0.5;
+    Float2 *= 5;
+    Float2 /= 2;
+    Num_1 %= 3;
+
+    // testing boolean operators and statements
+    if (Num_1 != Num_2) then {                                                      // if-then, not equal
+        cprint(Num_1);                                                              // console print
+    };                                            
+    if (Num_1 == Num_2) then {                                                      // if-then-else, equal
+        cprint("Equal");   
+    } else {                                          
+        cprint("Not Equal");                                                        // console print a string that looks like a variable name to make sure it's not picked up as one
+    }; 
+    if (!Boolean) then {                                                    
+        loop(6, step=2) {                                                           // for-loop
+            cprint("Looping...");
+        };
+    };
+    int Sum = 6;
+    loop_until(Sum <= 0) {                                                          // while-loop, less than or equal to 
+        Sum -= 1;
+    };
+    bool B1 = Num_1 < Num_2;                                                        // less than
+    bool B2 = Num_1 > Num_2;                                                        // greater than
+    bool B3 = Num_1 >= 0;                                                           // greater than or equal to
+    bool B4 = TRUE && FALSE;                                                        // and operator
+    bool B5 = FALSE || TRUE;                                                        // or operator
+
+    // testing variable operations and predefined functions
+    change_type(Num3, int);                                                         // change type
+    string Type = get_type(Num3);                                                   // get type
+    cprint(round(Num3, 100));                                                       // just round
+    cprint(round_up(Num3, 10));                                                     // round up
+    cprint(round_down(Num3, 1));                                                    // round down
+
+    // define a function
+    function Function(Arg1) returns NONE {
+        cprint(Arg1);
+    };
+
+    // call a function
+    Function("Hello World");
+
+    // read from console. im not implementing file operations lmaooo
+    cprint("Enter an integer: ");
+    string ConsoleIn = cread();
+
+};

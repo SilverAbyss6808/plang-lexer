@@ -10,6 +10,8 @@ class BcoToken:
 
     # the order that tokens are looked for in
     ttypes = [  'item_comment',
+                'literal_xlist',
+                # 'literal_xlistitem',
                 'literal_string',
 
                 # operators with two characters (search for these first)
@@ -35,6 +37,7 @@ class BcoToken:
                 'operator_gthan',       
                 'operator_lthan',      
                 'operator_assign',
+                'operator_dot',
 
                 'symbol_openpar',       
                 'symbol_closepar',      
@@ -66,7 +69,8 @@ class BcoToken:
                 'function_fileprint',   
                 'function_fileread',    
                 'function_fileopen',    
-                'function_fileclose',   
+                'function_fileclose',
+                'function_xsort',   
                 'function_arraysort',         
         
                 'literal_char',         
@@ -82,6 +86,7 @@ class BcoToken:
                 'type_none',            
                 'type_array',           
                 'type_string',
+                'type_xlist',
 
                 'literal_float',
                 'literal_integer'
@@ -111,6 +116,7 @@ class BcoToken:
             case 'type_none'            : return re.compile(r'none')  # this is a special type
             case 'type_array'           : return re.compile(r'arrayof')
             case 'type_string'          : return re.compile(r'string')
+            case 'type_xlist'           : return re.compile(r'xlist')
 
             case 'literal_integer'      : return re.compile(r'\d+')
             case 'literal_float'        : return re.compile(r'\d+\.\d+')
@@ -119,6 +125,8 @@ class BcoToken:
             case 'literal_none'         : return re.compile(r'NONE')
             # array will need to be defined as an open bracket, some items OR one integer, and a closing bracket
             case 'literal_string'       : return re.compile(r'".*"')
+            case 'literal_xlist'        : return re.compile(r'\[\[.*\]\]')  # find this first, then find individual elements with below
+            case 'literal_xlistitem'    : return re.compile(r'\[[^\[].*?\]')
             
             # define operators
             case 'operator_add'         : return re.compile(r'\+')
@@ -141,6 +149,7 @@ class BcoToken:
             case 'operator_gequal'      : return re.compile(r'>=')
             case 'operator_lequal'      : return re.compile(r'<=')
             case 'operator_assign'      : return re.compile(r'=')
+            case 'operator_dot'         : return re.compile(r'\.')
 
             # define symbols
             case 'symbol_openpar'       : return re.compile(r'\(')
@@ -176,6 +185,7 @@ class BcoToken:
             case 'function_fileread'    : return re.compile(r'fread')
             case 'function_fileopen'    : return re.compile(r'fopen')
             case 'function_fileclose'   : return re.compile(r'fclose')
+            case 'function_xsort'       : return re.compile(f'xsort')
             case 'function_arraysort'   : return re.compile(r'sort')
 
             # misc definitions
@@ -195,7 +205,8 @@ class BcoToken:
             case 'type_none'            : return BcoToken(token, 'none', match_obj.start(), match_obj.end())
             case 'type_array'           : return BcoToken(token, 'arrayof', match_obj.start(), match_obj.end())
             case 'type_string'          : return BcoToken(token, 'string', match_obj.start(), match_obj.end())
-                        
+            case 'type_xlist'           : return BcoToken(token, 'xlist', match_obj.start(), match_obj.end())
+
             case 'operator_add'         : return BcoToken(token, '+', match_obj.start(), match_obj.end())
             case 'operator_subtr'       : return BcoToken(token, '-', match_obj.start(), match_obj.end())
             case 'operator_mult'        : return BcoToken(token, '*', match_obj.start(), match_obj.end())
@@ -216,6 +227,7 @@ class BcoToken:
             case 'operator_gequal'      : return BcoToken(token, '>=', match_obj.start(), match_obj.end())
             case 'operator_lequal'      : return BcoToken(token, '<=', match_obj.start(), match_obj.end())
             case 'operator_assign'      : return BcoToken(token, '=', match_obj.start(), match_obj.end())
+            case 'operator_dot'         : return BcoToken(token, '.', match_obj.start(), match_obj.end())
 
             case 'symbol_openpar'       : return BcoToken(token, '(', match_obj.start(), match_obj.end())
             case 'symbol_closepar'      : return BcoToken(token, ')', match_obj.start(), match_obj.end())
@@ -248,6 +260,7 @@ class BcoToken:
             case 'function_fileread'    : return BcoToken(token, 'fread', match_obj.start(), match_obj.end())
             case 'function_fileopen'    : return BcoToken(token, 'fopen', match_obj.start(), match_obj.end())
             case 'function_fileclose'   : return BcoToken(token, 'fclose', match_obj.start(), match_obj.end())
+            case 'function_xsort'       : return BcoToken(token, 'xsort', match_obj.start(), match_obj.end())
             case 'function_arraysort'   : return BcoToken(token, 'sort', match_obj.start(), match_obj.end())
 
             # things WITH associated values
@@ -257,11 +270,11 @@ class BcoToken:
             case 'literal_char'         : return BcoToken(token, match_obj.group()[0], match_obj.start(), match_obj.end())
             case 'literal_bool'         : return BcoToken(token, bool(match_obj.group()), match_obj.start(), match_obj.end())
             case 'literal_none'         : return BcoToken(token, 'NONE', match_obj.start(), match_obj.end())
+            case 'literal_xlist'        : return BcoToken(token, str(match_obj.group()), match_obj.start(), match_obj.end())
+            case 'literal_xlistitem'    : return BcoToken(token, str(match_obj.group()), match_obj.start(), match_obj.end())
 
             case 'item_comment'         : return BcoToken(token, str(match_obj.group()), match_obj.start(), match_obj.end())
             case 'item_varname'         : return BcoToken(token, str(match_obj.group()), match_obj.start(), match_obj.end())
 
             case _                      : berr(ValueError, f'get_token error: token {token} value {match_obj.group()} not of correct type').throw_error()
 
-for token in BcoToken.ttypes:
-    print(f'{token.upper()}: ;') 

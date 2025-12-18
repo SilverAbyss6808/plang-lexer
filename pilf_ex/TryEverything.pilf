@@ -45,13 +45,6 @@ program TryEverything() returns none {
     bool B4 = TRUE && FALSE;                                                        // and operator
     bool B5 = FALSE || TRUE;                                                        // or operator
 
-    // testing variable operations and predefined functions
-    change_type(Num3, int);                                                         // change type
-    string Type = get_type(Num3);                                                   // get type
-    cprint(round(Num3, 100));                                                       // just round
-    cprint(round_up(Num3, 10));                                                     // round up
-    cprint(round_down(Num3, 1));                                                    // round down
-
     // define a function
     function Function(Arg1) returns NONE {
         cprint(Arg1);
@@ -60,12 +53,14 @@ program TryEverything() returns none {
     // call a function
     Function("Hello World");
 
-    // read from console. im not implementing file operations lmaooo
+    // read from console
     cprint("Enter an integer: ");
     string ConsoleIn = cread();
 
-    // xlist stuff
+    // define and sort xlist
     xlist BetterList = [["Ohio", 3, 8.5], ["Indiana", 5, 10.7], ["Illinois", 2, 11.8]];
     BetterList.xsort(1);
+
+    return NONE;
 
 };

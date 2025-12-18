@@ -3,7 +3,7 @@ program TestXlist() returns none {
 
     BetterList.xsort(1);                // specify column
 
-    cprint(BetterList);                // Prints "[["Illinois", 2, 11.8],["Ohio", 3, 8.5],["Indiana", 5, 10.7]]"
+    cprint(BetterList);                 // Prints "[["Illinois", 2, 11.8],["Ohio", 3, 8.5],["Indiana", 5, 10.7]]"
 
     return NONE;
 

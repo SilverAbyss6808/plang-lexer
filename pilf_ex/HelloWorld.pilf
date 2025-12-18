@@ -1,0 +1,5 @@
+program HelloWorld() returns none {
+    cprint("Hello world!");     // A comment
+    return NONE;                // Another comment
+}
+

@@ -2,7 +2,7 @@
 # hugemassive shoutout krypticmouse https://krypticmouse.hashnode.dev/writing-a-compiler-lexical-analysis
 # like actually. my goat
 
-from cls_BcoError import BcoError as berr
+from cls_PilfError import BcoError as berr
 import re
 
 
